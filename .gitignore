@@ -2,6 +2,8 @@ compile_commands.json
 build
 build-*
 
+*.snap
+
 .vscode
 .cquery_cache
 *.code-workspace
