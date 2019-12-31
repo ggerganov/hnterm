@@ -37,7 +37,7 @@ else()
         ${CURL_LIBRARIES}
         )
 
-    install(TARGETS hnterm DESTINATION ${CMAKE_INSTALL_PREFIX})
+    install(TARGETS hnterm RUNTIME DESTINATION bin)
 endif()
 
 if (HNTERM_ENABLE_API_CACHE)
