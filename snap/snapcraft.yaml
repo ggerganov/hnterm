@@ -3,7 +3,7 @@
   version: '0.1'
   summary: Hacker News in the terminal
   description: |
-    Interctive browsing of Hacker News in the terminal.
+    Interactive browsing of Hacker News in the terminal.
 
   base: core18
   grade: devel
