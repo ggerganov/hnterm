@@ -1,8 +1,6 @@
-![banner](./media/banner-transparent.png)
+# <img src="media/banner-transparent-small.png" height=150 alt="HNTerm : Hacker News in terminal" />
 
-# hnterm
-
-Interactive browsing of [Hacker News](https://news.ycombinator.com/news) in the terminal
+Browse [Hacker News](https://news.ycombinator.com/news) interactively in your terminal
 
 <a href="https://i.imgur.com/As9GT07.png" target="_blank">![hnterm-dark](https://i.imgur.com/As9GT07.png)</a>
 
