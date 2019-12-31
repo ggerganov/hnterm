@@ -2,9 +2,10 @@
 
 Interactive browsing of [Hacker News](https://news.ycombinator.com/news) in the terminal
 
-[![hnterm-demo](https://asciinema.org/a/gJakwNnEcgmGzZYiYIzFA1n8R.svg)](https://asciinema.org/a/gJakwNnEcgmGzZYiYIzFA1n8R)
+<a href="https://i.imgur.com/As9GT07.png" target="_blank">![hnterm-dark](https://i.imgur.com/As9GT07.png)</a>
+<a href="https://i.imgur.com/EUDfLUX.png" target="_blank">![hnterm-default](https://i.imgur.com/EUDfLUX.png)</a>
 
-<a href="https://i.imgur.com/JMuM62I.png" target="_blank">![hnterm-dark](https://i.imgur.com/JMuM62I.png)</a>
+[![hnterm-demo](https://asciinema.org/a/gJakwNnEcgmGzZYiYIzFA1n8R.svg)](https://asciinema.org/a/gJakwNnEcgmGzZYiYIzFA1n8R)
 
 ## Live demo in the browser
 
