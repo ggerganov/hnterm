@@ -5,7 +5,6 @@
 Interactive browsing of [Hacker News](https://news.ycombinator.com/news) in the terminal
 
 <a href="https://i.imgur.com/As9GT07.png" target="_blank">![hnterm-dark](https://i.imgur.com/As9GT07.png)</a>
-<a href="https://i.imgur.com/EUDfLUX.png" target="_blank">![hnterm-default](https://i.imgur.com/EUDfLUX.png)</a>
 
 [![hnterm-demo](https://asciinema.org/a/gJakwNnEcgmGzZYiYIzFA1n8R.svg)](https://asciinema.org/a/gJakwNnEcgmGzZYiYIzFA1n8R)
 
