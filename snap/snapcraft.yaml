@@ -1,15 +1,28 @@
 
   name: hnterm
-  version: '0.1' # just for humans, typically '1.2+git' or '1.3.2'
-  summary: Single-line elevator pitch for your amazing snap # 79 char long summary
+  version: '0.1'
+  summary: Hacker News in the terminal
   description: |
     Interctive browsing of Hacker News in the terminal.
 
-  grade: devel # must be 'stable' to release into candidate/stable channels
-  confinement: devmode # use 'strict' once you have the right plugs and slots
+  base: core18
+  grade: devel
+  confinement: devmode
 
   parts:
-    my-part:
-      # See 'snapcraft plugins'
-      plugin: nil
-  
+    hnterm:
+      source: https://github.com/ggerganov/hnterm
+      source-type: git
+      plugin: cmake
+      build-packages:
+        - g++
+        - make
+        - libncurses5-dev
+        - libcurl4-openssl-dev
+      stage-packages:
+        - libncurses5
+        - libcurl4
+
+  apps:
+    hnterm:
+      command: bin/hnterm

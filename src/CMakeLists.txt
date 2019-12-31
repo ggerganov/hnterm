@@ -36,6 +36,8 @@ else()
         imtui-ncurses
         ${CURL_LIBRARIES}
         )
+
+    install(TARGETS hnterm DESTINATION ${CMAKE_INSTALL_PREFIX})
 endif()
 
 if (HNTERM_ENABLE_API_CACHE)
