@@ -41,7 +41,7 @@ The Emscripten port of HNTerm uses Emscripten's Fetch API instead of `libcurl` t
 Demo: [hnterm.ggerganov.com](https://hnterm.ggerganov.com/) *(not suitable for mobile devices)*
 
 [changelog]: ./CHANGELOG.md
-[changelog-badge]: https://img.shields.io/badge/changelog-HNTerm%20v0.1
+[changelog-badge]: https://img.shields.io/badge/changelog-HNTerm%20v0.1-dummy
 [license]: ./LICENSE
 [version-badge]: https://img.shields.io/badge/version-0.1-blue.svg
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
