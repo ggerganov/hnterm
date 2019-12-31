@@ -11,6 +11,8 @@ endif()
 
 # options
 
+option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" OFF)
+
 option(HNTERM_ALL_WARNINGS            "hnterm: enable all compiler warnings" ON)
 option(HNTERM_ALL_WARNINGS_3RD_PARTY  "hnterm: enable all compiler warnings in 3rd party libs" ON)
 
