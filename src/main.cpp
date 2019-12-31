@@ -580,7 +580,7 @@ extern "C" {
                              ImGuiWindowFlags_NoMove);
                 ImGui::Text(" API requests     : %d / %d B (next update in %d s)", stateHN.nFetches, (int) stateHN.totalBytesDownloaded, stateHN.nextUpdate);
                 ImGui::Text(" Last API request : %s", stateHN.curURI);
-                ImGui::Text(" Source code      : https://github.com/ggerganov/imtui/tree/master/examples/hnterm");
+                ImGui::Text(" Source code      : https://github.com/ggerganov/hnterm");
                 ImGui::End();
             }
 
