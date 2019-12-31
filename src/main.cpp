@@ -688,7 +688,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char ** argv) {
     auto argm = parseCmdArguments(argc, argv);
     int mouseSupport = argm.find("--mouse") != argm.end() || argm.find("m") != argm.end();
     if (argm.find("--help") != argm.end() || argm.find("-h") != argm.end()) {
-        printf("Usage: %s [-m] [-h]\n", argv[0]);
+        printf("Usage: hnterm [-m] [-h]\n");
         printf("    -m, --mouse : ncurses mouse support\n");
         printf("    -h, --help  : print this help\n");
         return -1;
