@@ -1,5 +1,7 @@
 # <img src="media/banner-transparent-small.png" height=150 alt="HNTerm : Hacker News in terminal" />
 
+[![HNTerm v0.1 badge][changelog-badge]][changelog] [![Version 0.1 Badge][version-badge]][changelog] [![MIT License Badge][license-badge]][license]
+
 Browse [Hacker News](https://news.ycombinator.com/news) interactively in your terminal
 
 <a href="https://i.imgur.com/As9GT07.png" target="_blank">![hnterm-dark](https://i.imgur.com/As9GT07.png)</a>
@@ -37,3 +39,9 @@ make
 The Emscripten port of HNTerm uses Emscripten's Fetch API instead of `libcurl` to perform requests to the [HN API](https://github.com/HackerNews/API). 
 
 Demo: [hnterm.ggerganov.com](https://hnterm.ggerganov.com/) *(not suitable for mobile devices)*
+
+[changelog]: ./CHANGELOG.md
+[changelog-badge]: https://img.shields.io/badge/changelog-HNTerm%20v0.1
+[license]: ./LICENSE
+[version-badge]: https://img.shields.io/badge/version-0.1-blue.svg
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
