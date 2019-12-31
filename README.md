@@ -1,3 +1,5 @@
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/hnterm)
+
 # hnterm
 
 Interactive browsing of [Hacker News](https://news.ycombinator.com/news) in the terminal
@@ -17,13 +19,19 @@ Demo: [hnterm.ggerganov.com](https://hnterm.ggerganov.com/) *(not suitable for m
 
 HNTerm is a small console application written in C++ for browsing [Hacker News](https://news.ycombinator.com/news). It queries the official [HN API](https://github.com/HackerNews/API) and interactively displays the current stories and comments. It uses `libcurl` to perform the GET requests to the API. The UI is rendered with [ImTui](https://github.com/ggerganov/imtui). HNTerm fetches only the content that is currently visible on the screen. The window splits allow browsing multiple stories/comment sections at the same time.
 
-## Building
+## Installing
 
-###  Linux and Mac:
+### Ubuntu
+
+`sudo snap install hnterm --edge`
+
+## Building from source
+
+### Linux and Mac:
 
 ```bash
-git clone https://github.com/ggerganov/imtui --recursive
-cd imtui
+git clone https://github.com/ggerganov/hnterm --recursive
+cd hnterm
 mkdir build && cd build
 cmake ..
 make
