@@ -1,6 +1,9 @@
 # <img src="media/banner-transparent-small.png" height=150 alt="HNTerm : Hacker News in terminal" />
 
-[![HNTerm v0.1 badge][changelog-badge]][changelog] [![Version 0.1 Badge][version-badge]][changelog] [![MIT License Badge][license-badge]][license]
+[![HNTerm on Snapcraft](https://snapcraft.io//hnterm/badge.svg)](https://snapcraft.io/hnterm)
+[![HNTerm v0.1 badge][changelog-badge]][changelog]
+[![Version 0.1 Badge][version-badge]][changelog]
+[![MIT License Badge][license-badge]][license]
 
 Browse [Hacker News](https://news.ycombinator.com/news) interactively in your terminal
 
