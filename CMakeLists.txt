@@ -4,10 +4,7 @@ project(hnterm)
 set(CMAKE_EXPORT_COMPILE_COMMANDS "on")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-if (EMSCRIPTEN)
-    #set (CMAKE_CXX_FLAGS "-s ALLOW_MEMORY_GROWTH=1 -s FETCH=1 -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0")
-else()
-endif()
+include(cmake/GitVars.cmake)
 
 # options
 
@@ -41,7 +38,9 @@ endif()
 
 add_subdirectory(third-party)
 
-find_package(CURL REQUIRED)
+if (NOT EMSCRIPTEN)
+    find_package(CURL REQUIRED)
+endif()
 
 # main
 
