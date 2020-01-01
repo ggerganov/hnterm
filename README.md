@@ -8,8 +8,6 @@
 
 Browse [Hacker News](https://news.ycombinator.com/news) interactively in your terminal
 
-<a href="https://i.imgur.com/As9GT07.png" target="_blank">![hnterm-dark](https://i.imgur.com/As9GT07.png)</a>
-
 [![hnterm-demo](https://asciinema.org/a/291253.svg)](https://asciinema.org/a/291253)
 
 ## Details
