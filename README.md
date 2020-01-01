@@ -22,7 +22,11 @@ HNTerm is a small console application written in C++ for browsing [Hacker News](
 
 ### Ubuntu
 
-`sudo snap install hnterm --beta`
+```bash
+# no stable release yet, so we need the "--devmode" switch to be able to install the snap
+
+sudo snap install hnterm --beta --devmode
+```
 
 ## Building from source
 
