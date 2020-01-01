@@ -38,6 +38,16 @@ make
 ./bin/hnterm
 ```
 
+### Emscripten:
+
+```bash
+git clone https://github.com/ggerganov/hnterm --recursive
+cd hnterm
+mkdir build && cd build
+emconfigure cmake ..
+make
+```
+
 ## Live demo in the browser
 
 The Emscripten port of HNTerm uses Emscripten's Fetch API instead of `libcurl` to perform requests to the [HN API](https://github.com/HackerNews/API). 
