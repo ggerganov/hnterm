@@ -1,5 +1,6 @@
 # <img src="media/banner-transparent-small.png" height=150 alt="HNTerm : Hacker News in terminal" />
 
+[![Actions Status](https://github.com/ggerganov/hnterm/workflows/CI/badge.svg)](https://github.com/ggerganov/hnterm/actions)
 [![HNTerm on Snapcraft](https://snapcraft.io//hnterm/badge.svg)](https://snapcraft.io/hnterm)
 [![HNTerm v0.1 badge][changelog-badge]][changelog]
 [![Version 0.1 Badge][version-badge]][changelog]
