@@ -18,7 +18,7 @@ HNTerm is a small console application written in C++ for browsing [Hacker News](
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/hnterm)
 
-### Ubuntu
+### Linux
 
 ```bash
 sudo snap install hnterm
