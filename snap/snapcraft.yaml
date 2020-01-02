@@ -6,8 +6,8 @@
     Interactive browsing of Hacker News in the terminal.
 
   base: core18
-  grade: devel
-  confinement: devmode
+  grade: stable
+  confinement: strict
 
   parts:
     hnterm:
@@ -26,3 +26,6 @@
   apps:
     hnterm:
       command: bin/hnterm
+      plugs:
+        - network
+        - home
