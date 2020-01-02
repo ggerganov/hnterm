@@ -1,6 +1,6 @@
 
   name: hnterm
-  version: '0.1-stable'
+  version: '0.2-dev'
   summary: Hacker News in the terminal
   description: |
     Interactive browsing of Hacker News in the terminal.
