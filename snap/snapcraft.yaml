@@ -4,7 +4,7 @@
   summary: Hacker News in the terminal
   description: |
     Interactive browsing of Hacker News in the terminal.
- license: MIT
+  license: MIT
 
   base: core18
   grade: stable
