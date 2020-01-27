@@ -31,3 +31,4 @@
       plugs:
         - network
         - home
+        - desktop
