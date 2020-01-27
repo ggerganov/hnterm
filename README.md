@@ -3,7 +3,7 @@
 [![Actions Status](https://github.com/ggerganov/hnterm/workflows/CI/badge.svg)](https://github.com/ggerganov/hnterm/actions)
 [![HNTerm on Snapcraft](https://snapcraft.io//hnterm/badge.svg)](https://snapcraft.io/hnterm)
 [![Snap Status](https://build.snapcraft.io/badge/ggerganov/hnterm.svg)](https://build.snapcraft.io/user/ggerganov/hnterm)
-[![HNTerm v0.1 badge][changelog-badge]][changelog]
+[![HNTerm v0.2 badge][changelog-badge]][changelog]
 [![MIT License Badge][license-badge]][license]
 
 Browse [Hacker News](https://news.ycombinator.com/news) interactively in your terminal
@@ -55,7 +55,7 @@ The Emscripten port of HNTerm uses Emscripten's Fetch API instead of `libcurl` t
 Demo: [hnterm.ggerganov.com](https://hnterm.ggerganov.com/) *(not suitable for mobile devices)*
 
 [changelog]: ./CHANGELOG.md
-[changelog-badge]: https://img.shields.io/badge/changelog-HNTerm%20v0.1-dummy
+[changelog-badge]: https://img.shields.io/badge/changelog-HNTerm%20v0.2-dummy
 [license]: ./LICENSE
-[version-badge]: https://img.shields.io/badge/version-0.1-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.2-blue.svg
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
