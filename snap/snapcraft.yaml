@@ -23,6 +23,7 @@
       stage-packages:
         - libncurses5
         - libcurl4
+        - xdg-utils
 
   apps:
     hnterm:
