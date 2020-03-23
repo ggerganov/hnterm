@@ -370,13 +370,13 @@ extern "C" {
                     if (windowId == stateUI.hoveredWindowId) {
                         if (ImGui::IsMouseDoubleClicked(0) ||
                             ImGui::IsKeyPressed(ImGui::GetIO().KeyMap[ImGuiKey_Enter], false)) {
-                            if (stateUI.showHelpModal == false) {
+                            if (stateUI.showHelpModal == false && window.hoveredStoryId < (int) storyIds.size()) {
                                 window.showComments = true;
                                 window.selectedStoryId = storyIds[window.hoveredStoryId];
                             }
                         }
 
-                        if (ImGui::IsKeyPressed('r', false)) {
+                        if (ImGui::IsKeyPressed('r', false) && window.hoveredStoryId < (int) storyIds.size()) {
                             toUpdate.push_back(storyIds[window.hoveredStoryId]);
                         }
 
