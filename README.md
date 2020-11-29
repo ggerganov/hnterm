@@ -2,7 +2,6 @@
 
 [![Actions Status](https://github.com/ggerganov/hnterm/workflows/CI/badge.svg)](https://github.com/ggerganov/hnterm/actions)
 [![HNTerm on Snapcraft](https://snapcraft.io//hnterm/badge.svg)](https://snapcraft.io/hnterm)
-[![Snap Status](https://build.snapcraft.io/badge/ggerganov/hnterm.svg)](https://build.snapcraft.io/user/ggerganov/hnterm)
 [![HNTerm v0.2 badge][changelog-badge]][changelog]
 [![MIT License Badge][license-badge]][license]
 
