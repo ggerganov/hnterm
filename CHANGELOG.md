@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Fix hovered story id becoming negative causing seg fault
+- Fix highlighting of hovered story text when title is wrapped (#4)
+- Fix arrow keys not working in terminal
+
 ## [0.2] - 2020-01-27
 
 - Fix opening links in browser when using Snap package
