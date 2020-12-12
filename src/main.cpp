@@ -269,17 +269,30 @@ extern "C" {
                         if (std::holds_alternative<HN::Story>(item.data)) {
                             const HN::Story & story = std::get<HN::Story>(item.data);
 
+                            auto p0 = ImGui::GetCursorScreenPos();
+
+                            // draw text to be able to calculate the final text size
+                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
+                            ImGui::Text("%2d.", i + 1);
+                            ImGui::SameLine();
+                            ImGui::Text("%s", story.title.c_str());
+
+                            // draw hovered story highlight
                             if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
                                 auto col0 = ImGui::GetStyleColorVec4(ImGuiCol_Text);
                                 auto col1 = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
                                 ImGui::PushStyleColor(ImGuiCol_Text, col1);
                                 ImGui::PushStyleColor(ImGuiCol_TextDisabled, col0);
 
-                                auto p0 = ImGui::GetCursorScreenPos();
-                                p0.x += 1;
-                                auto p1 = p0;
-                                p1.x += ImGui::CalcTextSize(story.title.c_str()).x + 4;
+                                auto p1 = ImGui::GetCursorScreenPos();
+                                p1.y -= 1;
+                                if (p1.y > p0.y) {
+                                    p1.x += ImGui::GetContentRegionAvailWidth() - 1;
+                                } else {
+                                    p1.x += ImGui::CalcTextSize(story.title.c_str()).x + 5;
+                                }
 
+                                // highlight rectangle
                                 ImGui::GetWindowDrawList()->AddRectFilled(p0, p1, ImGui::GetColorU32(col0));
 
                                 if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
@@ -287,12 +300,15 @@ extern "C" {
                                 }
                             }
 
+                            // go back to original position and redraw text over the highlight
+                            ImGui::SetCursorScreenPos(p0);
+
                             ImGui::Text("%2d.", i + 1);
                             isHovered |= ImGui::IsItemHovered();
                             ImGui::SameLine();
-                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
                             ImGui::Text("%s", story.title.c_str());
                             isHovered |= ImGui::IsItemHovered();
+
                             ImGui::PopTextWrapPos();
                             ImGui::SameLine();
 
