@@ -2,7 +2,7 @@
 
 [![Actions Status](https://github.com/ggerganov/hnterm/workflows/CI/badge.svg)](https://github.com/ggerganov/hnterm/actions)
 [![HNTerm on Snapcraft](https://snapcraft.io//hnterm/badge.svg)](https://snapcraft.io/hnterm)
-[![HNTerm v0.2 badge][changelog-badge]][changelog]
+[![HNTerm v0.3 badge][changelog-badge]][changelog]
 [![MIT License Badge][license-badge]][license]
 
 Browse [Hacker News](https://news.ycombinator.com/news) interactively in your terminal
@@ -49,12 +49,12 @@ make
 
 ## Live demo in the browser
 
-The Emscripten port of HNTerm uses Emscripten's Fetch API instead of `libcurl` to perform requests to the [HN API](https://github.com/HackerNews/API). 
+The Emscripten port of HNTerm uses Emscripten's Fetch API instead of `libcurl` to perform requests to the [HN API](https://github.com/HackerNews/API).
 
 Demo: [hnterm.ggerganov.com](https://hnterm.ggerganov.com/) *(not suitable for mobile devices)*
 
 [changelog]: ./CHANGELOG.md
-[changelog-badge]: https://img.shields.io/badge/changelog-HNTerm%20v0.2-dummy
+[changelog-badge]: https://img.shields.io/badge/changelog-HNTerm%20v0.3-dummy
 [license]: ./LICENSE
-[version-badge]: https://img.shields.io/badge/version-0.2-blue.svg
+[version-badge]: https://img.shields.io/badge/version-0.3-blue.svg
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg

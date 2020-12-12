@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.3] - 2020-12-12
+
 - Fix hovered story id becoming negative causing seg fault
 - Fix highlighting of hovered story text when title is wrapped (#4)
 - Fix arrow keys not working in terminal

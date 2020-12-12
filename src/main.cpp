@@ -638,7 +638,7 @@ extern "C" {
                 ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = col;
             }
 
-            if (ImGui::BeginPopupModal("HNTerm v0.2###Help", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            if (ImGui::BeginPopupModal("HNTerm v0.3###Help", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 #ifdef __EMSCRIPTEN__
                 ImGui::Text(" ");
                 ImGui::Text("---------------------------------------------");
