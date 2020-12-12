@@ -403,7 +403,7 @@ extern "C" {
 
                         if (ImGui::IsKeyPressed('j', true) ||
                             ImGui::IsKeyPressed(ImGui::GetIO().KeyMap[ImGuiKey_DownArrow], true)) {
-                            window.hoveredStoryId = std::min(nShow - 1, window.hoveredStoryId + 1);
+                            window.hoveredStoryId = std::max(0, std::min(nShow - 1, window.hoveredStoryId + 1));
                         }
 
                         if (ImGui::IsKeyPressed('g', true)) {
