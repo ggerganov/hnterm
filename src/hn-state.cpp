@@ -223,6 +223,54 @@ namespace HN {
         }
     }
 
+    void parsePoll(const ItemData & data, Poll & res) {
+        try {
+            res.by = data.at("by");
+        } catch (...) {
+            res.by = "[deleted]";
+        }
+        try {
+            res.descendants = std::stoi(data.at("descendants"));
+        } catch (...) {
+            res.descendants = 0;
+        }
+        try {
+            res.id = std::stoi(data.at("id"));
+        } catch (...) {
+            res.id = 0;
+        }
+        try {
+            res.kids = JSON::parseIntArray(data.at("kids"));
+        } catch (...) {
+            res.kids.clear();
+        }
+        try {
+            res.parts = JSON::parseIntArray(data.at("parts"));
+        } catch (...) {
+            res.parts.clear();
+        }
+        try {
+            res.score = std::stoi(data.at("score"));
+        } catch (...) {
+            res.score = 0;
+        }
+        try {
+            res.time = std::stoll(data.at("time"));
+        } catch (...) {
+            res.time = 0;
+        }
+        try {
+            res.text = parseHTML(data.at("text"));
+        } catch (...) {
+            res.text = "";
+        }
+        try {
+            res.title = parseHTML(data.at("title"));
+        } catch (...) {
+            res.title = "";
+        }
+    }
+
     ItemIds getStoriesIds(const URI & uri) {
         return JSON::parseIntArray(getJSONForURI(uri));
     }
@@ -368,8 +416,16 @@ namespace HN {
                     break;
                 case ItemType::Poll:
                     {
-                        // temp
-                        item.needUpdate = false;
+                        if (std::holds_alternative<Poll>(item.data) == false) {
+                            item.data = Poll();
+                        }
+
+                        Poll & poll = std::get<Poll>(item.data);
+                        if (item.needUpdate) {
+                            parsePoll(data, poll);
+                            item.needUpdate = false;
+                            updated = true;
+                        }
                     }
                     break;
                 case ItemType::PollOpt:

@@ -59,7 +59,18 @@ struct Job {
     std::string domain = "";
 };
 
-struct Poll {};
+struct Poll {
+    std::string by = "";
+    int descendants = 0;
+    ItemId id = 0;
+    ItemIds kids;
+    ItemIds parts;
+    int score = 0;
+    uint64_t time = 0;
+    std::string text = "";
+    std::string title = "";
+};
+
 struct PollOpt {};
 
 enum class ItemType : int {
