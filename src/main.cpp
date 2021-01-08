@@ -425,22 +425,42 @@ extern "C" {
                         }
                     }
                 } else {
-                    if (std::holds_alternative<HN::Story>(items.at(window.selectedStoryId).data) == false) {
-                        window.showComments = false;
-                    } else {
-                        const auto & story = std::get<HN::Story>(items.at(window.selectedStoryId).data);
+                    struct RenderItemHelpers {
+                        static void pollOptions(const HN::Story &) {
+                        }
 
-                        toRefresh.push_back(story.id);
+                        static void pollOptions(const HN::Poll & item) {
+                            const int nOptions = item.parts.size();
+                            for (int i = 0; i < nOptions; ++i) {
+                                const auto & id = item.parts[i];
+                                if (items.find(id) == items.end() || std::holds_alternative<HN::Comment>(items.at(id).data) == false) {
+                                    continue;
+                                }
 
-                        ImGui::Text("%s", story.title.c_str());
-                        ImGui::TextDisabled("%d points by %s %s ago | %d comments", story.score, story.by.c_str(), stateHN.timeSince(story.time).c_str(), story.descendants);
-                        if (story.text.empty() == false) {
+                                const auto & option = items.at(id);
+                                const auto & data = std::get<HN::PollOpt>(option.data);
+
+                                ImGui::Text("  %s", data.text.c_str());
+                                ImGui::TextDisabled("  %d points", data.score);
+                            }
+                            ImGui::Text("%s", "");
+                        }
+                    };
+
+                    auto renderItem = [&toRefresh, &toUpdate](int windowId, auto & window, const auto & item) {
+                        toRefresh.push_back(item.id);
+
+                        ImGui::Text("%s", item.title.c_str());
+                        ImGui::TextDisabled("%d points by %s %s ago | %d comments", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str(), item.descendants);
+                        if (item.text.empty() == false) {
                             ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
-                            ImGui::Text("%s", story.text.c_str());
+                            ImGui::Text("%s", item.text.c_str());
                             ImGui::PopTextWrapPos();
                         }
 
                         ImGui::Text("%s", "");
+
+                        RenderItemHelpers::pollOptions(item);
 
                         int curCommentId = 0;
                         bool forceUpdate = false;
@@ -532,13 +552,13 @@ extern "C" {
 
                         if (windowId == stateUI.hoveredWindowId) {
                             if (ImGui::IsKeyPressed('r', false)) {
-                                toUpdate.push_back(story.id);
+                                toUpdate.push_back(item.id);
                                 forceUpdate = true;
                             }
                         }
 
                         ImGui::BeginChild("##comments", ImVec2(0, 0), false, ImGuiWindowFlags_NoScrollbar);
-                        renderComments(story.kids, 0);
+                        renderComments(item.kids, 0);
                         ImGui::EndChild();
 
                         if (windowId == stateUI.hoveredWindowId) {
@@ -561,7 +581,7 @@ extern "C" {
                             }
 
                             if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
-                                openInBrowser((std::string("https://news.ycombinator.com/item?id=") + std::to_string(story.id)).c_str());
+                                openInBrowser((std::string("https://news.ycombinator.com/item?id=") + std::to_string(item.id)).c_str());
                             }
 
                             if (ImGui::IsMouseClicked(1) ||
@@ -574,6 +594,18 @@ extern "C" {
                         }
 
                         window.hoveredCommentId = std::min(curCommentId - 1, window.hoveredCommentId);
+                    };
+
+                    if (std::holds_alternative<HN::Job>(items.at(window.selectedStoryId).data)) {
+                        window.showComments = false;
+                    } else if (std::holds_alternative<HN::Story>(items.at(window.selectedStoryId).data)) {
+                        const auto & data = std::get<HN::Story>(items.at(window.selectedStoryId).data);
+                        renderItem(windowId, window, data);
+                    } else if (std::holds_alternative<HN::Poll>(items.at(window.selectedStoryId).data)) {
+                        const auto & data = std::get<HN::Poll>(items.at(window.selectedStoryId).data);
+                        renderItem(windowId, window, data);
+                    } else {
+                        window.showComments = false;
                     }
                 }
 
