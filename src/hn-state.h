@@ -71,7 +71,14 @@ struct Poll {
     std::string title = "";
 };
 
-struct PollOpt {};
+struct PollOpt {
+    std::string by = "";
+    ItemId id = 0;
+    ItemId poll = 0;
+    int score = 0;
+    uint64_t time = 0;
+    std::string text = "";
+};
 
 enum class ItemType : int {
     Unknown,
