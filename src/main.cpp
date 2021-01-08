@@ -265,170 +265,108 @@ extern "C" {
 
                         const auto & item = items.at(id);
 
+                        struct RenderItemHelpers {
+                            static void input(const HN::Story & item) {
+                                if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
+                                    openInBrowser(item.url);
+                                }
+                            }
+
+                            static void input(const HN::Job & item) {
+                                if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
+                                    openInBrowser(item.url);
+                                }
+                            }
+
+                            static void input(const HN::Poll & ) {
+                            }
+
+                            static void stats(const HN::Story & item, bool & isHovered) {
+                                ImGui::TextDisabled(" (%s)", item.domain.c_str());
+
+                                if (stateUI.storyListMode != UI::StoryListMode::Micro) {
+                                    ImGui::TextDisabled("    %d points by %s %s ago | %d comments", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str(), item.descendants);
+                                    isHovered |= ImGui::IsItemHovered();
+                                }
+                            }
+
+                            static void stats(const HN::Job & item, bool & isHovered) {
+                                ImGui::TextDisabled(" (%s)", item.domain.c_str());
+
+                                if (stateUI.storyListMode != UI::StoryListMode::Micro) {
+                                    ImGui::TextDisabled("    %d points by %s %s ago", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str());
+                                    isHovered |= ImGui::IsItemHovered();
+                                }
+                            }
+
+                            static void stats(const HN::Poll & item, bool & isHovered) {
+                                if (stateUI.storyListMode != UI::StoryListMode::Micro) {
+                                    ImGui::TextDisabled("    %d points by %s %s ago | %d comments", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str(), item.descendants);
+                                    isHovered |= ImGui::IsItemHovered();
+                                }
+                            }
+                        };
+
+                        static auto renderItem = [](int i, int windowId, const auto & window, const auto & item, bool & isHovered) {
+                            auto p0 = ImGui::GetCursorScreenPos();
+
+                            // draw text to be able to calculate the final text size
+                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
+                            ImGui::Text("%2d.", i + 1);
+                            ImGui::SameLine();
+                            ImGui::Text("%s", item.title.c_str());
+
+                            // draw hovered item highlight
+                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
+                                auto col0 = ImGui::GetStyleColorVec4(ImGuiCol_Text);
+                                auto col1 = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
+                                ImGui::PushStyleColor(ImGuiCol_Text, col1);
+                                ImGui::PushStyleColor(ImGuiCol_TextDisabled, col0);
+
+                                auto p1 = ImGui::GetCursorScreenPos();
+                                p1.y -= 1;
+                                if (p1.y > p0.y) {
+                                    p1.x += ImGui::GetContentRegionAvailWidth() - 1;
+                                } else {
+                                    p1.x += ImGui::CalcTextSize(item.title.c_str()).x + 5;
+                                }
+
+                                // highlight rectangle
+                                ImGui::GetWindowDrawList()->AddRectFilled(p0, p1, ImGui::GetColorU32(col0));
+
+                                RenderItemHelpers::input(item);
+                            }
+
+                            // go back to original position and redraw text over the highlight
+                            ImGui::SetCursorScreenPos(p0);
+
+                            ImGui::Text("%2d.", i + 1);
+                            isHovered |= ImGui::IsItemHovered();
+                            ImGui::SameLine();
+                            ImGui::Text("%s", item.title.c_str());
+                            isHovered |= ImGui::IsItemHovered();
+
+                            ImGui::PopTextWrapPos();
+                            ImGui::SameLine();
+
+                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
+                                ImGui::PopStyleColor(2);
+                            }
+
+                            RenderItemHelpers::stats(item, isHovered);
+                        };
+
                         bool isHovered = false;
 
                         if (std::holds_alternative<HN::Story>(item.data)) {
-                            const HN::Story & story = std::get<HN::Story>(item.data);
-
-                            auto p0 = ImGui::GetCursorScreenPos();
-
-                            // draw text to be able to calculate the final text size
-                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
-                            ImGui::Text("%2d.", i + 1);
-                            ImGui::SameLine();
-                            ImGui::Text("%s", story.title.c_str());
-
-                            // draw hovered story highlight
-                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
-                                auto col0 = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-                                auto col1 = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
-                                ImGui::PushStyleColor(ImGuiCol_Text, col1);
-                                ImGui::PushStyleColor(ImGuiCol_TextDisabled, col0);
-
-                                auto p1 = ImGui::GetCursorScreenPos();
-                                p1.y -= 1;
-                                if (p1.y > p0.y) {
-                                    p1.x += ImGui::GetContentRegionAvailWidth() - 1;
-                                } else {
-                                    p1.x += ImGui::CalcTextSize(story.title.c_str()).x + 5;
-                                }
-
-                                // highlight rectangle
-                                ImGui::GetWindowDrawList()->AddRectFilled(p0, p1, ImGui::GetColorU32(col0));
-
-                                if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
-                                    openInBrowser(story.url);
-                                }
-                            }
-
-                            // go back to original position and redraw text over the highlight
-                            ImGui::SetCursorScreenPos(p0);
-
-                            ImGui::Text("%2d.", i + 1);
-                            isHovered |= ImGui::IsItemHovered();
-                            ImGui::SameLine();
-                            ImGui::Text("%s", story.title.c_str());
-                            isHovered |= ImGui::IsItemHovered();
-
-                            ImGui::PopTextWrapPos();
-                            ImGui::SameLine();
-
-                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
-                                ImGui::PopStyleColor(2);
-                            }
-
-                            ImGui::TextDisabled(" (%s)", story.domain.c_str());
-
-                            if (stateUI.storyListMode != UI::StoryListMode::Micro) {
-                                ImGui::TextDisabled("    %d points by %s %s ago | %d comments", story.score, story.by.c_str(), stateHN.timeSince(story.time).c_str(), story.descendants);
-                                isHovered |= ImGui::IsItemHovered();
-                            }
+                            const auto & data = std::get<HN::Story>(item.data);
+                            renderItem(i, windowId, window, data, isHovered);
                         } else if (std::holds_alternative<HN::Job>(item.data)) {
-                            const HN::Job & job = std::get<HN::Job>(item.data);
-
-                            auto p0 = ImGui::GetCursorScreenPos();
-
-                            // draw text to be able to calculate the final text size
-                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
-                            ImGui::Text("%2d.", i + 1);
-                            ImGui::SameLine();
-                            ImGui::Text("%s", job.title.c_str());
-
-                            // draw hovered item highlight
-                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
-                                auto col0 = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-                                auto col1 = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
-                                ImGui::PushStyleColor(ImGuiCol_Text, col1);
-                                ImGui::PushStyleColor(ImGuiCol_TextDisabled, col0);
-
-                                auto p1 = ImGui::GetCursorScreenPos();
-                                p1.y -= 1;
-                                if (p1.y > p0.y) {
-                                    p1.x += ImGui::GetContentRegionAvailWidth() - 1;
-                                } else {
-                                    p1.x += ImGui::CalcTextSize(job.title.c_str()).x + 5;
-                                }
-
-                                // highlight rectangle
-                                ImGui::GetWindowDrawList()->AddRectFilled(p0, p1, ImGui::GetColorU32(col0));
-
-                                if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
-                                    openInBrowser(job.url);
-                                }
-                            }
-
-                            // go back to original position and redraw text over the highlight
-                            ImGui::SetCursorScreenPos(p0);
-
-                            ImGui::Text("%2d.", i + 1);
-                            isHovered |= ImGui::IsItemHovered();
-                            ImGui::SameLine();
-                            ImGui::Text("%s", job.title.c_str());
-                            isHovered |= ImGui::IsItemHovered();
-
-                            ImGui::PopTextWrapPos();
-                            ImGui::SameLine();
-
-                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
-                                ImGui::PopStyleColor(2);
-                            }
-
-                            ImGui::TextDisabled(" (%s)", job.domain.c_str());
-
-                            if (stateUI.storyListMode != UI::StoryListMode::Micro) {
-                                ImGui::TextDisabled("    %d points by %s %s ago", job.score, job.by.c_str(), stateHN.timeSince(job.time).c_str());
-                                isHovered |= ImGui::IsItemHovered();
-                            }
+                            const auto & data = std::get<HN::Job>(item.data);
+                            renderItem(i, windowId, window, data, isHovered);
                         } else if (std::holds_alternative<HN::Poll>(item.data)) {
-                            const HN::Poll & poll = std::get<HN::Poll>(item.data);
-
-                            auto p0 = ImGui::GetCursorScreenPos();
-
-                            // draw text to be able to calculate the final text size
-                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
-                            ImGui::Text("%2d.", i + 1);
-                            ImGui::SameLine();
-                            ImGui::Text("%s", poll.title.c_str());
-
-                            // draw hovered item highlight
-                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
-                                auto col0 = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-                                auto col1 = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
-                                ImGui::PushStyleColor(ImGuiCol_Text, col1);
-                                ImGui::PushStyleColor(ImGuiCol_TextDisabled, col0);
-
-                                auto p1 = ImGui::GetCursorScreenPos();
-                                p1.y -= 1;
-                                if (p1.y > p0.y) {
-                                    p1.x += ImGui::GetContentRegionAvailWidth() - 1;
-                                } else {
-                                    p1.x += ImGui::CalcTextSize(poll.title.c_str()).x + 5;
-                                }
-
-                                // highlight rectangle
-                                ImGui::GetWindowDrawList()->AddRectFilled(p0, p1, ImGui::GetColorU32(col0));
-                            }
-
-                            // go back to original position and redraw text over the highlight
-                            ImGui::SetCursorScreenPos(p0);
-
-                            ImGui::Text("%2d.", i + 1);
-                            isHovered |= ImGui::IsItemHovered();
-                            ImGui::SameLine();
-                            ImGui::Text("%s", poll.title.c_str());
-                            isHovered |= ImGui::IsItemHovered();
-
-                            ImGui::PopTextWrapPos();
-                            ImGui::SameLine();
-
-                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
-                                ImGui::PopStyleColor(2);
-                            }
-
-                            if (stateUI.storyListMode != UI::StoryListMode::Micro) {
-                                ImGui::TextDisabled("%d points by %s %s ago", poll.score, poll.by.c_str(), stateHN.timeSince(poll.time).c_str());
-                                isHovered |= ImGui::IsItemHovered();
-                            }
+                            const auto & data = std::get<HN::Poll>(item.data);
+                            renderItem(i, windowId, window, data, isHovered);
                         }
 
                         if (isHovered) {
