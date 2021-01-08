@@ -59,8 +59,26 @@ struct Job {
     std::string domain = "";
 };
 
-struct Poll {};
-struct PollOpt {};
+struct Poll {
+    std::string by = "";
+    int descendants = 0;
+    ItemId id = 0;
+    ItemIds kids;
+    ItemIds parts;
+    int score = 0;
+    uint64_t time = 0;
+    std::string text = "";
+    std::string title = "";
+};
+
+struct PollOpt {
+    std::string by = "";
+    ItemId id = 0;
+    ItemId poll = 0;
+    int score = 0;
+    uint64_t time = 0;
+    std::string text = "";
+};
 
 enum class ItemType : int {
     Unknown,
@@ -95,7 +113,8 @@ struct State {
     ItemIds idsAsk;
     ItemIds idsNew;
 
-    std::map<ItemId, Item> items;
+    using ItemContainer = std::map<ItemId, Item>;
+    ItemContainer items;
 
     int nFetches = 0;
     uint64_t totalBytesDownloaded = 0;

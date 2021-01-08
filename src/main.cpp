@@ -258,26 +258,65 @@ extern "C" {
                         toRefresh.push_back(id);
                         if (items.find(id) == items.end() || (
                                         std::holds_alternative<HN::Story>(items.at(id).data) == false &&
-                                        std::holds_alternative<HN::Job>(items.at(id).data) == false)) {
+                                        std::holds_alternative<HN::Job>(items.at(id).data) == false &&
+                                        std::holds_alternative<HN::Poll>(items.at(id).data) == false)) {
                             continue;
                         }
 
                         const auto & item = items.at(id);
 
-                        bool isHovered = false;
+                        struct RenderItemHelpers {
+                            static void input(const HN::Story & item) {
+                                if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
+                                    openInBrowser(item.url);
+                                }
+                            }
 
-                        if (std::holds_alternative<HN::Story>(item.data)) {
-                            const HN::Story & story = std::get<HN::Story>(item.data);
+                            static void input(const HN::Job & item) {
+                                if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
+                                    openInBrowser(item.url);
+                                }
+                            }
 
+                            static void input(const HN::Poll & ) {
+                            }
+
+                            static void stats(const HN::Story & item, bool & isHovered) {
+                                ImGui::TextDisabled(" (%s)", item.domain.c_str());
+
+                                if (stateUI.storyListMode != UI::StoryListMode::Micro) {
+                                    ImGui::TextDisabled("    %d points by %s %s ago | %d comments", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str(), item.descendants);
+                                    isHovered |= ImGui::IsItemHovered();
+                                }
+                            }
+
+                            static void stats(const HN::Job & item, bool & isHovered) {
+                                ImGui::TextDisabled(" (%s)", item.domain.c_str());
+
+                                if (stateUI.storyListMode != UI::StoryListMode::Micro) {
+                                    ImGui::TextDisabled("    %d points by %s %s ago", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str());
+                                    isHovered |= ImGui::IsItemHovered();
+                                }
+                            }
+
+                            static void stats(const HN::Poll & item, bool & isHovered) {
+                                if (stateUI.storyListMode != UI::StoryListMode::Micro) {
+                                    ImGui::TextDisabled("    %d points by %s %s ago | %d comments", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str(), item.descendants);
+                                    isHovered |= ImGui::IsItemHovered();
+                                }
+                            }
+                        };
+
+                        static auto renderItem = [](int i, int windowId, const auto & window, const auto & item, bool & isHovered) {
                             auto p0 = ImGui::GetCursorScreenPos();
 
                             // draw text to be able to calculate the final text size
                             ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
                             ImGui::Text("%2d.", i + 1);
                             ImGui::SameLine();
-                            ImGui::Text("%s", story.title.c_str());
+                            ImGui::Text("%s", item.title.c_str());
 
-                            // draw hovered story highlight
+                            // draw hovered item highlight
                             if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
                                 auto col0 = ImGui::GetStyleColorVec4(ImGuiCol_Text);
                                 auto col1 = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
@@ -289,15 +328,13 @@ extern "C" {
                                 if (p1.y > p0.y) {
                                     p1.x += ImGui::GetContentRegionAvailWidth() - 1;
                                 } else {
-                                    p1.x += ImGui::CalcTextSize(story.title.c_str()).x + 5;
+                                    p1.x += ImGui::CalcTextSize(item.title.c_str()).x + 5;
                                 }
 
                                 // highlight rectangle
                                 ImGui::GetWindowDrawList()->AddRectFilled(p0, p1, ImGui::GetColorU32(col0));
 
-                                if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
-                                    openInBrowser(story.url);
-                                }
+                                RenderItemHelpers::input(item);
                             }
 
                             // go back to original position and redraw text over the highlight
@@ -306,7 +343,7 @@ extern "C" {
                             ImGui::Text("%2d.", i + 1);
                             isHovered |= ImGui::IsItemHovered();
                             ImGui::SameLine();
-                            ImGui::Text("%s", story.title.c_str());
+                            ImGui::Text("%s", item.title.c_str());
                             isHovered |= ImGui::IsItemHovered();
 
                             ImGui::PopTextWrapPos();
@@ -316,52 +353,20 @@ extern "C" {
                                 ImGui::PopStyleColor(2);
                             }
 
-                            ImGui::TextDisabled(" (%s)", story.domain.c_str());
+                            RenderItemHelpers::stats(item, isHovered);
+                        };
 
-                            if (stateUI.storyListMode != UI::StoryListMode::Micro) {
-                                ImGui::TextDisabled("    %d points by %s %s ago | %d comments", story.score, story.by.c_str(), stateHN.timeSince(story.time).c_str(), story.descendants);
-                                isHovered |= ImGui::IsItemHovered();
-                            }
+                        bool isHovered = false;
+
+                        if (std::holds_alternative<HN::Story>(item.data)) {
+                            const auto & data = std::get<HN::Story>(item.data);
+                            renderItem(i, windowId, window, data, isHovered);
                         } else if (std::holds_alternative<HN::Job>(item.data)) {
-                            const HN::Job & job = std::get<HN::Job>(item.data);
-
-                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
-                                auto col0 = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-                                auto col1 = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
-                                ImGui::PushStyleColor(ImGuiCol_Text, col1);
-                                ImGui::PushStyleColor(ImGuiCol_TextDisabled, col0);
-
-                                auto p0 = ImGui::GetCursorScreenPos();
-                                p0.x += 1;
-                                auto p1 = p0;
-                                p1.x += ImGui::CalcTextSize(job.title.c_str()).x + 4;
-
-                                ImGui::GetWindowDrawList()->AddRectFilled(p0, p1, ImGui::GetColorU32(col0));
-
-                                if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
-                                    openInBrowser(job.url);
-                                }
-                            }
-
-                            ImGui::Text("%2d.", i + 1);
-                            isHovered |= ImGui::IsItemHovered();
-                            ImGui::SameLine();
-                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
-                            ImGui::Text("%s", job.title.c_str());
-                            isHovered |= ImGui::IsItemHovered();
-                            ImGui::PopTextWrapPos();
-                            ImGui::SameLine();
-
-                            if (windowId == stateUI.hoveredWindowId && i == window.hoveredStoryId) {
-                                ImGui::PopStyleColor(2);
-                            }
-
-                            ImGui::TextDisabled(" (%s)", job.domain.c_str());
-
-                            if (stateUI.storyListMode != UI::StoryListMode::Micro) {
-                                ImGui::TextDisabled("    %d points by %s %s ago", job.score, job.by.c_str(), stateHN.timeSince(job.time).c_str());
-                                isHovered |= ImGui::IsItemHovered();
-                            }
+                            const auto & data = std::get<HN::Job>(item.data);
+                            renderItem(i, windowId, window, data, isHovered);
+                        } else if (std::holds_alternative<HN::Poll>(item.data)) {
+                            const auto & data = std::get<HN::Poll>(item.data);
+                            renderItem(i, windowId, window, data, isHovered);
                         }
 
                         if (isHovered) {
@@ -420,26 +425,47 @@ extern "C" {
                         }
                     }
                 } else {
-                    if (std::holds_alternative<HN::Story>(items.at(window.selectedStoryId).data) == false) {
-                        window.showComments = false;
-                    } else {
-                        const auto & story = std::get<HN::Story>(items.at(window.selectedStoryId).data);
+                    struct RenderItemHelpers {
+                        static void pollOptions(const HN::Story &, const HN::State::ItemContainer & ) {
+                        }
 
-                        toRefresh.push_back(story.id);
+                        static void pollOptions(const HN::Poll & item, const HN::State::ItemContainer & items) {
+                            const int nOptions = item.parts.size();
+                            for (int i = 0; i < nOptions; ++i) {
+                                const auto & id = item.parts[i];
+                                if (items.find(id) == items.end() || std::holds_alternative<HN::Comment>(items.at(id).data) == false) {
+                                    continue;
+                                }
 
-                        ImGui::Text("%s", story.title.c_str());
-                        ImGui::TextDisabled("%d points by %s %s ago | %d comments", story.score, story.by.c_str(), stateHN.timeSince(story.time).c_str(), story.descendants);
-                        if (story.text.empty() == false) {
+                                const auto & option = items.at(id);
+                                const auto & data = std::get<HN::PollOpt>(option.data);
+
+                                ImGui::Text("  %s", data.text.c_str());
+                                ImGui::TextDisabled("  %d points", data.score);
+                            }
+                            ImGui::Text("%s", "");
+                        }
+                    };
+
+                    static auto renderItem = [&toRefresh, &toUpdate](int windowId, auto & window, const auto & item, const auto & items) {
+                        toRefresh.push_back(item.id);
+
+                        ImGui::Text("%s", item.title.c_str());
+                        ImGui::TextDisabled("%d points by %s %s ago | %d comments", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str(), item.descendants);
+                        if (item.text.empty() == false) {
                             ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
-                            ImGui::Text("%s", story.text.c_str());
+                            ImGui::Text("%s", item.text.c_str());
                             ImGui::PopTextWrapPos();
                         }
 
                         ImGui::Text("%s", "");
 
+                        RenderItemHelpers::pollOptions(item, items);
+
                         int curCommentId = 0;
                         bool forceUpdate = false;
 
+                        // recursive function
                         std::function<void(const HN::ItemIds & commentIds, int indent)> renderComments;
                         renderComments = [&](const HN::ItemIds & commentIds, int indent) {
                             const int nComments = commentIds.size();
@@ -527,13 +553,13 @@ extern "C" {
 
                         if (windowId == stateUI.hoveredWindowId) {
                             if (ImGui::IsKeyPressed('r', false)) {
-                                toUpdate.push_back(story.id);
+                                toUpdate.push_back(item.id);
                                 forceUpdate = true;
                             }
                         }
 
                         ImGui::BeginChild("##comments", ImVec2(0, 0), false, ImGuiWindowFlags_NoScrollbar);
-                        renderComments(story.kids, 0);
+                        renderComments(item.kids, 0);
                         ImGui::EndChild();
 
                         if (windowId == stateUI.hoveredWindowId) {
@@ -556,7 +582,7 @@ extern "C" {
                             }
 
                             if (ImGui::IsKeyPressed('o', false) || ImGui::IsKeyPressed('O', false)) {
-                                openInBrowser((std::string("https://news.ycombinator.com/item?id=") + std::to_string(story.id)).c_str());
+                                openInBrowser((std::string("https://news.ycombinator.com/item?id=") + std::to_string(item.id)).c_str());
                             }
 
                             if (ImGui::IsMouseClicked(1) ||
@@ -569,6 +595,18 @@ extern "C" {
                         }
 
                         window.hoveredCommentId = std::min(curCommentId - 1, window.hoveredCommentId);
+                    };
+
+                    if (std::holds_alternative<HN::Job>(items.at(window.selectedStoryId).data)) {
+                        window.showComments = false;
+                    } else if (std::holds_alternative<HN::Story>(items.at(window.selectedStoryId).data)) {
+                        const auto & data = std::get<HN::Story>(items.at(window.selectedStoryId).data);
+                        renderItem(windowId, window, data, items);
+                    } else if (std::holds_alternative<HN::Poll>(items.at(window.selectedStoryId).data)) {
+                        const auto & data = std::get<HN::Poll>(items.at(window.selectedStoryId).data);
+                        renderItem(windowId, window, data, items);
+                    } else {
+                        window.showComments = false;
                     }
                 }
 
