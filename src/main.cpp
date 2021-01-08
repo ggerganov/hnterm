@@ -426,10 +426,10 @@ extern "C" {
                     }
                 } else {
                     struct RenderItemHelpers {
-                        static void pollOptions(const HN::Story &) {
+                        static void pollOptions(const HN::Story &, const HN::State::ItemContainer & ) {
                         }
 
-                        static void pollOptions(const HN::Poll & item) {
+                        static void pollOptions(const HN::Poll & item, const HN::State::ItemContainer & items) {
                             const int nOptions = item.parts.size();
                             for (int i = 0; i < nOptions; ++i) {
                                 const auto & id = item.parts[i];
@@ -447,7 +447,7 @@ extern "C" {
                         }
                     };
 
-                    auto renderItem = [&toRefresh, &toUpdate](int windowId, auto & window, const auto & item) {
+                    static auto renderItem = [&toRefresh, &toUpdate](int windowId, auto & window, const auto & item, const auto & items) {
                         toRefresh.push_back(item.id);
 
                         ImGui::Text("%s", item.title.c_str());
@@ -460,11 +460,12 @@ extern "C" {
 
                         ImGui::Text("%s", "");
 
-                        RenderItemHelpers::pollOptions(item);
+                        RenderItemHelpers::pollOptions(item, items);
 
                         int curCommentId = 0;
                         bool forceUpdate = false;
 
+                        // recursive function
                         std::function<void(const HN::ItemIds & commentIds, int indent)> renderComments;
                         renderComments = [&](const HN::ItemIds & commentIds, int indent) {
                             const int nComments = commentIds.size();
@@ -600,10 +601,10 @@ extern "C" {
                         window.showComments = false;
                     } else if (std::holds_alternative<HN::Story>(items.at(window.selectedStoryId).data)) {
                         const auto & data = std::get<HN::Story>(items.at(window.selectedStoryId).data);
-                        renderItem(windowId, window, data);
+                        renderItem(windowId, window, data, items);
                     } else if (std::holds_alternative<HN::Poll>(items.at(window.selectedStoryId).data)) {
                         const auto & data = std::get<HN::Poll>(items.at(window.selectedStoryId).data);
-                        renderItem(windowId, window, data);
+                        renderItem(windowId, window, data, items);
                     } else {
                         window.showComments = false;
                     }

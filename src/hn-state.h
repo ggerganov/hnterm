@@ -113,7 +113,8 @@ struct State {
     ItemIds idsAsk;
     ItemIds idsNew;
 
-    std::map<ItemId, Item> items;
+    using ItemContainer = std::map<ItemId, Item>;
+    ItemContainer items;
 
     int nFetches = 0;
     uint64_t totalBytesDownloaded = 0;
