@@ -679,7 +679,7 @@ extern "C" {
                 ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = col;
             }
 
-            if (ImGui::BeginPopupModal("HNTerm v0.3###Help", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            if (ImGui::BeginPopupModal("HNTerm v0.4###Help", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
 #ifdef __EMSCRIPTEN__
                 ImGui::Text(" ");
                 ImGui::Text("---------------------------------------------");
@@ -689,7 +689,7 @@ extern "C" {
 #endif
                 ImGui::Text(" ");
                 ImGui::Text("Interactive browsing of https://news.ycombinator.com/");
-                ImGui::Text("Content is automatically updated - no need to refresh ");
+                ImGui::Text("Content is automatically updated - no need to refresh  |");
                 ImGui::Text(" ");
                 ImGui::Text("    h/H         - toggle Help window    ");
                 ImGui::Text("    s           - toggle Status window    ");
