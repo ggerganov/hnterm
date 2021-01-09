@@ -20,7 +20,8 @@
 
 - Initial release
 
-[unreleased]: https://github.com/ggerganov/hnterm/compare/v0.3...HEAD
+[unreleased]: https://github.com/ggerganov/hnterm/compare/v0.4...HEAD
+[0.4]: https://github.com/ggerganov/hnterm/releases/tag/v0.4
 [0.3]: https://github.com/ggerganov/hnterm/releases/tag/v0.3
 [0.2]: https://github.com/ggerganov/hnterm/releases/tag/v0.2
 [0.1]: https://github.com/ggerganov/hnterm/releases/tag/v0.1
