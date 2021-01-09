@@ -300,6 +300,8 @@ extern "C" {
                             }
 
                             static void stats(const HN::Poll & item, bool & isHovered) {
+                                ImGui::Text("%s", "");
+
                                 if (stateUI.storyListMode != UI::StoryListMode::Micro) {
                                     ImGui::TextDisabled("    %d points by %s %s ago | %d comments", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str(), item.descendants);
                                     isHovered |= ImGui::IsItemHovered();
@@ -426,14 +428,15 @@ extern "C" {
                     }
                 } else {
                     struct RenderItemHelpers {
-                        static void pollOptions(const HN::Story &, const HN::State::ItemContainer & ) {
+                        static void pollOptions(const HN::Story &, const HN::State::ItemContainer & , HN::ItemIds & ) {
                         }
 
-                        static void pollOptions(const HN::Poll & item, const HN::State::ItemContainer & items) {
+                        static void pollOptions(const HN::Poll & item, const HN::State::ItemContainer & items, HN::ItemIds & toRefresh) {
                             const int nOptions = item.parts.size();
                             for (int i = 0; i < nOptions; ++i) {
                                 const auto & id = item.parts[i];
-                                if (items.find(id) == items.end() || std::holds_alternative<HN::Comment>(items.at(id).data) == false) {
+                                toRefresh.push_back(id);
+                                if (items.find(id) == items.end() || std::holds_alternative<HN::PollOpt>(items.at(id).data) == false) {
                                     continue;
                                 }
 
@@ -460,7 +463,7 @@ extern "C" {
 
                         ImGui::Text("%s", "");
 
-                        RenderItemHelpers::pollOptions(item, items);
+                        RenderItemHelpers::pollOptions(item, items, toRefresh);
 
                         int curCommentId = 0;
                         bool forceUpdate = false;
@@ -476,7 +479,7 @@ extern "C" {
                                     toUpdate.push_back(id);
                                 }
 
-                                toRefresh.push_back(commentIds[i]);
+                                toRefresh.push_back(id);
                                 if (items.find(id) == items.end() || std::holds_alternative<HN::Comment>(items.at(id).data) == false) {
                                     continue;
                                 }
