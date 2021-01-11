@@ -23,6 +23,12 @@ HNTerm is a small console application written in C++ for browsing [Hacker News](
 sudo snap install hnterm
 ```
 
+### Mac OS
+
+```bash
+brew install ggerganov/ggerganov/hnterm
+```
+
 ## Building from source
 
 ### Linux and Mac:
