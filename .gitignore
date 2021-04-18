@@ -4,6 +4,7 @@ build-*
 
 *.snap
 
+.cache
 .clangd
 .DS_Store
 .vscode
