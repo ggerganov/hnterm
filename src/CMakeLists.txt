@@ -18,7 +18,7 @@ if (EMSCRIPTEN)
         )
 
     target_link_libraries(${TARGET} PRIVATE
-        imtui-core
+        imtui
         imtui-emscripten
         )
 
