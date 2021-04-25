@@ -216,6 +216,10 @@
                 screen.addEventListener('touchend', ontouch);
                 screen.addEventListener('touchcancel', ontouch);
 
+                setInterval(function() {
+                    Module._render_frame();
+                }, 50);
+
                 window.requestAnimationFrame(renderFrame);
             }
 
@@ -292,7 +296,6 @@
                     }
                 }
 
-                Module._render_frame();
                 Module._get_screen(bufferScreen);
 
                 for (var i = 1; i < screenX*screenY - 1; ++i) {
