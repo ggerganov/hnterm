@@ -234,7 +234,9 @@
                 console.log("onerror: " + event);
             };
 
+            var nRandom = null;
             var bufferScreen = null;
+            var bufferScreenOld = null;
             var bufferScreenMax = 0;
 
             var oldRow = {};
@@ -263,18 +265,46 @@
                     if (screenX*screenY > bufferScreenMax) {
                         if (bufferScreen != null) {
                             Module._free(bufferScreen);
+                            Module._free(bufferScreenOld);
                         }
 
+                        nRandom = new Array(screenX*screenY);
                         bufferScreen = Module._malloc(3*screenX*screenY);
+                        bufferScreenOld = Module._malloc(3*screenX*screenY);
                         bufferScreenMax = screenX*screenY;
+                    }
+
+                    for (var i = 0; i < screenX*screenY; ++i) {
+                        nRandom[i] = 0;
                     }
                 }
 
                 Module._render_frame();
                 Module._get_screen(bufferScreen);
 
+                for (var i = 1; i < screenX*screenY - 1; ++i) {
+                    var c = (Module.HEAPU8)[bufferScreen    + 3*i];
+                    var o = (Module.HEAPU8)[bufferScreenOld + 3*i];
+
+                    c = String.fromCharCode(c);
+                    o = String.fromCharCode(o);
+
+                    if (c == ' ' || c == 0) {
+                        nRandom[i] = 0;
+                    } else if (nRandom[i] == 0 && (o == ' ' || o == 0) && (c != o)) {
+                        nRandom[i] = 3;
+                        nRandom[i-1] = 3;
+                        nRandom[i+1] = 3;
+                    }
+                }
+
+                var nR = 0;
                 var idx = 0;
                 for (var y = 0; y < screenY; ++y) {
+                    if (nR > 200) {
+                        break;
+                    }
+
                     var curRow = '';
                     var prevf = -1;
                     var prevb = -1;
@@ -289,14 +319,27 @@
                             c = ' ';
                         }
 
-                        if (prevf != f || prevb != b) {
+                        if (nRandom[y*screenX + x] > 0) {
+                            if (nRandom[y*screenX + x] == 1) {
+                                --nRandom[y*screenX + x];
+                            } else if ((Math.random() < 0.1) || (x < 3 || (nRandom[y*screenX + x - 1] == 0 && nRandom[y*screenX + x - 2] == 0 && nRandom[y*screenX + x - 3] == 0)))
+                            {
+                                --nRandom[y*screenX + x];
+                                c = String.fromCharCode(33 + Math.random()*26);
+                                ++nR;
+                            } else {
+                                c = ' ';
+                            }
+                        }
+
+                        if ((f != 0 && prevf != f) || prevb != b) {
                             curRow += '</span><span class="cell f'+f+' b'+b+'">';
+
+                            prevf = f;
+                            prevb = b;
                         }
 
                         curRow += c;
-
-                        prevf = f;
-                        prevb = b;
                     }
                     curRow +='</span>\n';
 
@@ -305,6 +348,8 @@
                         document.getElementById('r'+y).innerHTML = curRow;
                     }
                 }
+
+                Module._get_screen(bufferScreenOld);
 
                 window.requestAnimationFrame(renderFrame);
             }
