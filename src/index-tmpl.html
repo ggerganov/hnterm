@@ -98,6 +98,7 @@
                 Module._set_key_down(toChar(event));
 
                 if (event.keyCode >= 112 && event.keyCode <= 123) {
+                    event.stopImmediatePropagation();
                 } else {
                     event.preventDefault();
                 }
