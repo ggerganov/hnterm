@@ -66,6 +66,17 @@
             var charSizeX = document.getElementById('single-char').getBoundingClientRect().width;
             var charSizeY = document.getElementById('single-char').getBoundingClientRect().height;
 
+            function findGetParameter(parameterName) {
+                var result = null,
+                    tmp = [];
+                var items = location.search.substr(1).split("&");
+                for (var index = 0; index < items.length; index++) {
+                    tmp = items[index].split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                }
+                return result;
+            }
+
             function toChar(event) {
                 if (event.key.length == 1) {
                     return event.key.charCodeAt(0);
@@ -234,6 +245,7 @@
                 console.log("onerror: " + event);
             };
 
+            var nR0 = findGetParameter('r') || 3;
             var nRandom = null;
             var bufferScreen = null;
             var bufferScreenOld = null;
@@ -292,9 +304,9 @@
                     if (c == ' ' || c == 0) {
                         nRandom[i] = 0;
                     } else if (nRandom[i] == 0 && (o == ' ' || o == 0) && (c != o)) {
-                        nRandom[i] = 3;
-                        nRandom[i-1] = 3;
-                        nRandom[i+1] = 3;
+                        nRandom[i] = nR0;
+                        nRandom[i-1] = nR0;
+                        nRandom[i+1] = nR0;
                     }
                 }
 
@@ -322,8 +334,7 @@
                         if (nRandom[y*screenX + x] > 0) {
                             if (nRandom[y*screenX + x] == 1) {
                                 --nRandom[y*screenX + x];
-                            } else if ((Math.random() < 0.1) || (x < 3 || (nRandom[y*screenX + x - 1] == 0 && nRandom[y*screenX + x - 2] == 0 && nRandom[y*screenX + x - 3] == 0)))
-                            {
+                            } else if ((Math.random() < 0.1) || (x < 3 || (nRandom[y*screenX + x - 1] == 0 && nRandom[y*screenX + x - 2] == 0 && nRandom[y*screenX + x - 3] == 0))) {
                                 --nRandom[y*screenX + x];
                                 c = String.fromCharCode(33 + Math.random()*26);
                                 ++nR;
