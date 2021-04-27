@@ -340,6 +340,7 @@
                                 --nRandom[y*screenX + x];
                             } else if ((Math.random() < 0.1) || (x < 3 || (nRandom[y*screenX + x - 1] == 0 && nRandom[y*screenX + x - 2] == 0 && nRandom[y*screenX + x - 3] == 0))) {
                                 --nRandom[y*screenX + x];
+                                f = 10; // green
                                 c = String.fromCharCode(33 + Math.random()*26);
                                 ++nR;
                             } else {
