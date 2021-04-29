@@ -43,6 +43,8 @@ make
 ./bin/hnterm
 ```
 
+* Ubuntu 20.04 might need prerequisites: `sudo apt install cmake libncurses-dev libcurl4-openssl-dev`
+
 ### Emscripten:
 
 ```bash
