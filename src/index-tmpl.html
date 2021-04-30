@@ -87,8 +87,8 @@
             function onkeyup(event) {
                 Module._set_key_up(toChar(event));
 
-                if (event.keyCode >= 112 && event.keyCode <= 123) {
-                } else {
+                if (event.keyCode >= 112 && event.keyCode <= 123) { // F keys
+                } else if (event.keyCode == 9) { // Tab
                     event.preventDefault();
                 }
             }
@@ -97,9 +97,9 @@
                 //console.log(event);
                 Module._set_key_down(toChar(event));
 
-                if (event.keyCode >= 112 && event.keyCode <= 123) {
+                if (event.keyCode >= 112 && event.keyCode <= 123) { // F keys
                     event.stopImmediatePropagation();
-                } else {
+                } else if (event.keyCode == 9) { // Tab
                     event.preventDefault();
                 }
             }
