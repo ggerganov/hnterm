@@ -88,7 +88,11 @@
                 Module._set_key_up(toChar(event));
 
                 if (event.keyCode >= 112 && event.keyCode <= 123) { // F keys
-                } else if (event.keyCode == 9) { // Tab
+                } else if (
+                        event.keyCode == 8 || // Backspace
+                        event.keyCode == 9 || // Tab
+                        event.keyCode == 46 || // Delete
+                        (event.keyCode >= 37 && event.keyCode <= 40)) { // Arrow keys
                     event.preventDefault();
                 }
             }
@@ -99,7 +103,11 @@
 
                 if (event.keyCode >= 112 && event.keyCode <= 123) { // F keys
                     event.stopImmediatePropagation();
-                } else if (event.keyCode == 9) { // Tab
+                } else if (
+                        event.keyCode == 8 || // Backspace
+                        event.keyCode == 9 || // Tab
+                        event.keyCode == 46 || // Delete
+                        (event.keyCode >= 37 && event.keyCode <= 40)) { // Arrow keys
                     event.preventDefault();
                 }
             }
