@@ -59,6 +59,7 @@
             };
 
             var isMobile = mobilecheck();
+            var isInitialized = false;
 
             var screenX = -1;
             var screenY = -1;
@@ -224,10 +225,6 @@
                 screen.addEventListener('touchend', ontouch);
                 screen.addEventListener('touchcancel', ontouch);
 
-                setInterval(function() {
-                    Module._render_frame();
-                }, 50);
-
                 window.requestAnimationFrame(renderFrame);
             }
 
@@ -267,6 +264,14 @@
             var oldRow = {};
 
             function renderFrame() {
+                if (isInitialized == false) {
+                    setInterval(function() {
+                        Module._render_frame();
+                    }, 50);
+
+                    isInitialized = true;
+                }
+
                 var screen = document.getElementById('screen');
 
                 var screenXNew = Math.floor(window.innerWidth/charSizeX - 1);
