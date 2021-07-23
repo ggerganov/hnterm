@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix display of Ask stories (#10)
+- Fix text sometimes being cropped near window edge (#9)
+
 ## [0.4] - 2021-01-09
 
 - Added support for Polls (#7)
