@@ -248,6 +248,7 @@ extern "C" {
                     const auto & storyIds =
                         (window.content == UI::WindowContent::Top) ? stateHN.idsTop :
                         (window.content == UI::WindowContent::Show) ? stateHN.idsShow :
+                        (window.content == UI::WindowContent::Ask) ? stateHN.idsAsk :
                         (window.content == UI::WindowContent::New) ? stateHN.idsNew :
                         stateHN.idsTop;
 
