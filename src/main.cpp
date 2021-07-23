@@ -314,7 +314,7 @@ extern "C" {
                             auto p0 = ImGui::GetCursorScreenPos();
 
                             // draw text to be able to calculate the final text size
-                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
+                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth() - 2);
                             ImGui::Text("%2d.", i + 1);
                             ImGui::SameLine();
                             ImGui::Text("%s", item.title.c_str());
@@ -457,7 +457,7 @@ extern "C" {
                         ImGui::Text("%s", item.title.c_str());
                         ImGui::TextDisabled("%d points by %s %s ago | %d comments", item.score, item.by.c_str(), stateHN.timeSince(item.time).c_str(), item.descendants);
                         if (item.text.empty() == false) {
-                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
+                            ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth() - 2);
                             ImGui::Text("%s", item.text.c_str());
                             ImGui::PopTextWrapPos();
                         }
@@ -518,7 +518,7 @@ extern "C" {
                                 }
 
                                 if (stateUI.collapsed[id] == false) {
-                                    ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth());
+                                    ImGui::PushTextWrapPos(ImGui::GetContentRegionAvailWidth() - 2);
                                     ImGui::Text("%*s", indent, "");
                                     ImGui::SameLine();
                                     ImGui::Text("%s", comment.text.c_str());
